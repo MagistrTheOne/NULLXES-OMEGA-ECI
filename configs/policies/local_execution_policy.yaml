@@ -1,0 +1,18 @@
+policy:
+  local_execution_mode: structure_and_docs_only
+  allow_local_training: false
+  allow_local_large_inference: false
+  training_provider: runpod_only
+
+allowed_local_actions:
+  - edit_code
+  - edit_configs
+  - write_docs
+  - run_static_checks
+
+forbidden_local_actions:
+  - launch_pretraining
+  - launch_posttraining
+  - run_checkpoint_optimization
+  - run_full_benchmark_suites
+

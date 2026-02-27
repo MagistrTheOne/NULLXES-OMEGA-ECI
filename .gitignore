@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment
+.env
+.venv/
+venv/
+
+# Logs and artifacts
+logs/
+artifacts/
+checkpoints/
+wandb/
+
+# Editor
+.vscode/
+.idea/
+

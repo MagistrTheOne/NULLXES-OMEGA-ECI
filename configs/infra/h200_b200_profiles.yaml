@@ -1,0 +1,28 @@
+profiles:
+  b200_8x:
+    description: Primary high-throughput sparse training profile
+    gpus_per_node: 8
+    gpu_class: NVIDIA_B200
+    interconnect: nvlink_or_equivalent
+    network: infiniband_preferred
+    use_cases:
+      - large_scale_sparse_pretraining
+      - moe_throughput_critical_runs
+
+  h200_8x:
+    description: Compatibility and long-context refinement profile
+    gpus_per_node: 8
+    gpu_class: NVIDIA_H200
+    interconnect: nvlink_or_equivalent
+    network: infiniband_preferred
+    use_cases:
+      - post_training
+      - long_context_extension
+      - alignment_and_eval_cycles
+
+cluster_defaults:
+  container_base: cuda12_pytorch_runtime
+  nccl_async_error_handling: true
+  checkpoint_storage: object_storage_s3_compatible
+  dataset_mount_mode: read_only
+  log_streaming: true

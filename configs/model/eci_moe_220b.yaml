@@ -1,0 +1,72 @@
+project:
+  name: NULLXES_OMEGA_ECI
+  owner: NULLXES_LLC
+  version: v0.1
+
+model:
+  class: embodied_multimodal_cognitive_intelligence
+  architecture: sparse_decoder_transformer_moe
+  total_parameters_target: 220000000000
+
+  layers:
+    total: 56
+    dense_stabilizer_layers: 16
+    moe_layers: 40
+
+  dimensions:
+    hidden_size: 7168
+    attention_heads: 56
+    kv_heads: 8
+    expert_ffn_size: 28672
+
+  experts:
+    total_experts: 144
+    shared_experts: 16
+    routed_experts: 128
+    active_experts_per_token: 14
+    routed_active_k: 12
+    shared_active_k: 2
+
+  routing:
+    type: hierarchical_hybrid
+    level_1: task_segment_prior
+    level_2: token_topk_within_group
+    aux_load_balancing_loss: true
+    expert_capacity_factor_train: 1.25
+    expert_capacity_factor_infer: 1.0
+
+  attention:
+    positional_encoding: rope
+    rope_theta: 10000
+    long_context_extension:
+      method: rope_scaling_post_training
+      target_context_tokens: 1048576
+    use_gqa: true
+    kernel: flash_attention_2
+
+  context:
+    native_tokens: 131072
+    post_training_scalable_tokens: 1048576
+    research_target_tokens: 2000000000000
+
+modalities:
+  enabled:
+    - text
+    - code
+    - vision
+    - audio
+    - music_symbolic
+    - music_generative
+    - tool_use
+    - robotics_control_interface
+
+embodiment:
+  output_mode: structured_plan_packets
+  direct_motor_output: false
+  required_fields:
+    - objective
+    - constraints
+    - action_sequence
+    - termination_conditions
+    - confidence
+

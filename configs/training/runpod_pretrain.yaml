@@ -1,0 +1,49 @@
+run:
+  stage: pretrain
+  remote_only: true
+  provider: runpod
+  seed: 42
+
+hardware:
+  preferred_profile: b200_8x
+  fallback_profile: h200_8x
+  precision: bf16_fp8_mixed
+
+parallelism:
+  data_parallel_size: 16
+  tensor_parallel_size: 8
+  pipeline_parallel_size: 8
+  expert_parallel_size: 16
+  context_parallel_size: 2
+
+optimization:
+  optimizer: adamw
+  learning_rate: 0.00015
+  min_learning_rate: 0.000015
+  weight_decay: 0.1
+  betas: [0.9, 0.95]
+  grad_clip_norm: 1.0
+  lr_schedule: cosine
+  warmup_steps: 2000
+
+batching:
+  global_batch_tokens: 8388608
+  micro_batch_size: 1
+  gradient_accumulation_steps: 32
+
+moe:
+  router_aux_loss_coef: 0.01
+  z_loss_coef: 0.001
+  token_drop_policy: capacity_based
+
+checkpoint:
+  save_interval_steps: 500
+  save_optimizer_state_every_n: 2
+  keep_last_n: 8
+  write_manifest: true
+
+logging:
+  metrics_backend: wandb
+  log_every_steps: 10
+  include_router_stats: true
+

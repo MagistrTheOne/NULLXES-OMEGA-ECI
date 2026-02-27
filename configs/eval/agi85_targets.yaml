@@ -1,0 +1,22 @@
+program:
+  aggregate_target_score: 0.85
+  evaluation_mode: controlled_agi_equivalent
+
+tracks:
+  abstract_reasoning:
+    target_score: 0.86
+  coding:
+    target_score: 0.88
+  planning:
+    target_score: 0.85
+  multimodal_grounding:
+    target_score: 0.83
+  adaptive_transfer:
+    target_score: 0.83
+
+gates:
+  require_calibrated_confidence: true
+  require_tool_reliability_min: 0.92
+  require_long_horizon_completion_min: 0.80
+  require_no_critical_safety_regressions: true
+

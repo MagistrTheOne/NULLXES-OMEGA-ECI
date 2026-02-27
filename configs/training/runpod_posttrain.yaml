@@ -1,0 +1,46 @@
+run:
+  stage: posttrain
+  remote_only: true
+  provider: runpod
+  seed: 42
+
+hardware:
+  preferred_profile: h200_8x
+  fallback_profile: b200_8x
+  precision: bf16
+
+curriculum:
+  - supervised_finetune_reasoning
+  - tool_use_alignment
+  - planning_alignment
+  - long_context_extension
+  - confidence_calibration
+
+optimization:
+  optimizer: adamw
+  learning_rate: 0.00003
+  min_learning_rate: 0.000003
+  weight_decay: 0.05
+  lr_schedule: cosine
+  warmup_steps: 500
+
+long_context:
+  start_tokens: 131072
+  target_tokens: 1048576
+  schedule: progressive
+  retrieval_assisted_training: true
+
+rl:
+  enabled: true
+  algorithm_family: policy_optimization_with_verifier
+  reward_components:
+    - correctness
+    - plan_consistency
+    - tool_reliability
+    - calibration
+
+checkpoint:
+  save_interval_steps: 250
+  keep_last_n: 12
+  write_manifest: true
+
