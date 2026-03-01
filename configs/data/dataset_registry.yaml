@@ -1,0 +1,47 @@
+version: v0.2
+project: NULLXES_OMEGA_ECI
+profile: omega_mid_1xh200
+
+sources:
+  - id: nemotron_post_training_v2
+    category: text_reasoning
+    repo_type: dataset
+    repo: nvidia/Nemotron-Post-Training-Dataset-v2
+    split: train
+    status: use
+    license: permissive_check_required
+
+  - id: open_perfectblend
+    category: text_reasoning
+    repo_type: dataset
+    repo: mlabonne/open-perfectblend
+    split: train
+    status: use
+    license: Apache-2.0
+
+  - id: orca_math_word_problems_200k
+    category: text_reasoning
+    repo_type: dataset
+    repo: microsoft/orca-math-word-problems-200k
+    split: train
+    status: use
+    license: MIT
+
+  - id: finevision
+    category: vision_language
+    repo_type: dataset
+    repo: HuggingFaceM4/FineVision
+    split: train
+    status: use_sample_only
+    sample_max_rows: 500000
+    license: open_check_required
+
+mix:
+  cycle_1:
+    text_reasoning: 0.70
+    vision_language: 0.30
+
+notes:
+  - Run downloads and preprocessing on RunPod only.
+  - Validate licenses before training merge.
+  - Apply dedup, pii, toxicity, and broken-pair filters.
